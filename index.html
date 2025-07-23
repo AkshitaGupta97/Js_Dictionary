@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Dictionary Page</h1>
+        </nav>
+    </header>
+    <main>
+        <form>
+            <input type="text" placeholder="Enter your Search..">
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="result"></div>
+    </main>
+    <footer>
+        <p>&copy;, Dictionary Page, 2025</p>
+    </footer>
+
+    <script>
+        const form = document.querySelector('form')
+        const result = document.querySelector('.result')
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            getWordInfo(form.elements[0].value); // elements[0] = input, elements[1] = button
+        })
+
+        const getWordInfo = async (word) => {
+            const response = await fetch (`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            const data = await response.json();
+
+            console.log(data);
+            
+        }
+        
+        
+    </script>
+</body>
+</html>
