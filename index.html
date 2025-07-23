@@ -38,6 +38,8 @@
 
         const getWordInfo = async (word) => {
             try {
+                result.innerHTML = `<p><i>Loading...</i></p>`
+                
                 const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
                 const data = await response.json();
                 console.log(data);
@@ -49,23 +51,45 @@
                     <p class="part-speech">${data[0].meanings[0].partOfSpeech}</p>
                     <p><strong>Meaning : </strong>${definitions.definition === undefined ? "Not Found, Try Other" : definitions.definition}</p>
                     <p><strong>Example : </strong>${definitions.example === undefined ? "Not Found, Try Other" : definitions.example}</p>
-                    <p><strong>Antonyms : </strong></p>
+                    
                 `
                 // fetching antonyms...
-                if(definitions.antonyms.length === 0){  // anotyms is an array 
-                    result.innerHTML += `<span>"Antonyms, not found"</span>`
-
+                if(definitions.antonyms.length === 0){  // antonyms is an array 
+                    result.innerHTML += `
+                        <p><strong>Antonyms : </strong></p>
+                        <p><span>"Antonyms, not found"</span></p>
+                    `
                 }
                 else {
                     for(let i=0;i<definitions.antonyms.length; i++){
-                        result.innerHTML += `<li>${definitions.antonyms[i]}</li>`
+                        result.innerHTML += `
+                        <p><strong>Antonyms : </strong></p>
+                        <li>${definitions.antonyms[i]}</li>
+                        `
+                    }
+                }
+
+                // fetching synonyms
+
+                if(definitions.synonyms.length===0){
+                    result.innerHTML += `
+                        <p><strong>Synonyms : </strong></p>
+                        <p><span>"Synonyms, not found"</span></p>
+                    `
+                }
+                else {
+                    for(let i=0;i<definitions.synonyms.length;i++){
+                        result.innerHTML += `
+                        <p><strong>Synonyms : </strong></p>
+                        <li>${definitions.synonyms[i]}</li>
+                        `
                     }
                 }
 
                 // Adding source link
-
                 result.innerHTML += `<p><a href="${data[0].sourceUrls}" target="_blank">Read More...</a></p>`
             }
+
             catch(error) {
                 result.innerHTML = `<p>Sorry, word not found.. Try again..</p>`
             }
